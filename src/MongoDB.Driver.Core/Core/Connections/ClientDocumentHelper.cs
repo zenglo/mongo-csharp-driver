@@ -14,6 +14,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -51,8 +52,8 @@ namespace MongoDB.Driver.Core.Connections
         internal static BsonDocument CreateDriverDocument()
         {
             var assembly = typeof(ConnectionInitializer).GetTypeInfo().Assembly;
-            var fileVersionAttribute = assembly.GetCustomAttribute<AssemblyFileVersionAttribute>();
-            var driverVersion = fileVersionAttribute.Version;
+            var fileVersionAttribute = assembly.GetCustomAttributes<AssemblyFileVersionAttribute>().FirstOrDefault();
+            var driverVersion = fileVersionAttribute?.Version;
 
             return CreateDriverDocument(driverVersion);
         }
